@@ -1,3 +1,6 @@
+ Simulate three nodes point-to-point networks with duplex links between them. Set the
+ queue size and vary the bandwidth and find the number of packets dropped
+
 set ns [new Simulator]
 set nf [open p1.nam w]
 $ns namtrace-all $nf
