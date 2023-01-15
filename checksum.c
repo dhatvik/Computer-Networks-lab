@@ -1,52 +1,79 @@
 #include<stdio.h>
-#include<math.h>
+#include<stdlib.h>
+#include<string.h>
+char str[100];
 
-
-int sender(int b[20],int k)
+int generatechecksum(int mode ,int checksum)
 {
-    int checksum,sum=0,i;
-    printf("\n SENDER SIDE\n");
-    for(i=0;i<k;i++)
-    sum+=b[i];
-    printf("Sender Sum is \t:%d",sum);
-   
-    checksum=~sum;
-    printf("\n Sender Checksum is %d:",checksum);
-    return checksum;
-}
+    int n,temp,sum=0;
+    if(strlen(str)%2 !=0)
+    {
+        n = (strlen(str)+1)/2;
+    }
+    else
+    {
+    n = strlen(str)/2;
+    }
 
-int receiver(int c[20],int k,int scheck)
-{
-    int checksum,sum=0,i;
-    printf("\n RECEIVER SIDE\n");
-    for(i=0;i<k;i++)
-    sum+=c[i];
-    printf("\nReceivers Sum is %d",sum);
-    sum=sum+scheck;
-    checksum=~sum;
-    printf("\n Receiver Chcksum is %d ",checksum);
-    return checksum;
-}
+    for(int i=0;i<n;i++)
+    {
+        temp= str[i*2];
+        temp=(temp*256) + str[(i*2)+1];
+        printf("\n%x",temp);
+        sum=sum+temp;
+    }
 
+    if(mode = 1)
+    {
+        // printf("\n%x",checksum);
+        sum=sum+checksum;
+    }
 
+    if(sum%65536 != 0)
+    {
+        n=sum%65536;
+        sum=(sum/65536)+n;
+    }
+    printf("\nsum genearted is %x",sum);
+    sum=65535-sum;
+    printf("\n checksum generated is %x",sum);
+
+    return sum;
+} 
 
 void main()
 {
-    int a[20];
-    int i,scheck,rcheck,m;
+    int sum1=0;
+    int sum2=0;
 
-    printf("Enter no of bit strings\n");
-    scanf("%d",&m);
-    printf("Enter the bit strings\n");
-    for(i=0;i<m;i++)
-    scanf("%d",&a[i]);
+    printf("Enter the string u want to send");
+    scanf("%s",str);
 
-    scheck=sender(a,m);
-    rcheck=receiver(a,m,scheck);
+    sum1=generatechecksum(0,0);
 
-    if(rcheck==0)
-    printf("\nNo Errors");
+    int ch;
+    printf("Enter 1 if u want to introduce error");
+    scanf("%d",&ch);
+    if(ch==1)
+    {
+        str[0]++;
+        sum2=generatechecksum(1,sum1);
+
+        if(sum2==0)
+        {
+        printf("\n No error");
+        }
+        printf("\n error detected");
+    }
     else
-    printf("\nError is present");
+    {
+        sum2=generatechecksum(1,sum1);
+        if(sum2==0)
+        {
+        printf("\n No error");
+        }
+        else
+        printf("\n error detected");
     
+    }
 }
