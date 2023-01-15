@@ -23,9 +23,9 @@ int generatechecksum(int mode ,int checksum)
         sum=sum+temp;
     }
 
-    if(mode = 1)
+    if(mode == 1)
     {
-        // printf("\n%x",checksum);
+        printf("\n%x",checksum);
         sum=sum+checksum;
     }
 
@@ -63,6 +63,7 @@ void main()
         {
         printf("\n No error");
         }
+        else
         printf("\n error detected");
     }
     else
