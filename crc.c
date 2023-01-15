@@ -74,7 +74,7 @@ void main()
     printf("The Remainder is given by\n");
     for(i=0;i<keylen-1;i++)
     {
-        if(rem[i]==0)
+        if(rem[i]=='1')
         flag=1;
         printf("%c",rem[i]);
     }
